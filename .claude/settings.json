@@ -1,0 +1,41 @@
+{
+  "permissions": {
+    "allow": [
+      "Read",
+      "Edit",
+      "Write",
+      "WebSearch",
+      "WebFetch",
+      "Bash(python3:*)",
+      "Bash(.venv/bin/python:*)",
+      "Bash(.venv/bin/pip:*)",
+      "Bash(make:*)",
+      "Bash(gcc:*)",
+      "Bash(javac:*)",
+      "Bash(java:*)",
+      "Bash(mvn:*)",
+      "Bash(latexmk:*)",
+      "Bash(pdflatex:*)",
+      "Bash(bibtex:*)",
+      "Bash(pdftotext:*)",
+      "Bash(pdftoppm:*)",
+      "Bash(pdfinfo:*)",
+      "Bash(lscpu:*)",
+      "Bash(nproc:*)",
+      "Bash(bash .claude/skills/:*)",
+      "Bash(bash scripts/:*)",
+      "Bash(git init:*)",
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git tag:*)",
+      "Bash(git archive:*)"
+    ],
+    "deny": [
+      "Bash(git push:*)",
+      "Bash(git remote add:*)"
+    ]
+  }
+}

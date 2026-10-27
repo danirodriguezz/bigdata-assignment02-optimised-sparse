@@ -1,0 +1,261 @@
+% =====================================================================================
+% CANDIDATE references for the matrix-multiplication reports.
+% These are well-known works, but BEFORE moving an entry into report/references.bib you MUST:
+%   1. verify it exists (publisher page / DOI resolver / dblp) and that metadata is exact,
+%   2. add its DOI (or official URL) after verifying it,
+%   3. confirm it supports the specific claim you cite it for (read the abstract/relevant part).
+% Cite only what you actually use. Never invent references, pages or DOIs.
+% =====================================================================================
+
+% ---------- Classical / dense algorithms and memory hierarchy ----------
+@article{strassen1969,
+  author  = {Volker Strassen},
+  title   = {Gaussian elimination is not optimal},
+  journal = {Numerische Mathematik},
+  volume  = {13},
+  number  = {4},
+  pages   = {354--356},
+  year    = {1969}
+}
+
+@article{goto2008,
+  author  = {Kazushige Goto and Robert A. van de Geijn},
+  title   = {Anatomy of high-performance matrix multiplication},
+  journal = {ACM Transactions on Mathematical Software},
+  volume  = {34},
+  number  = {3},
+  year    = {2008}
+}
+
+@inproceedings{lam1991,
+  author    = {Monica D. Lam and Edward E. Rothberg and Michael E. Wolf},
+  title     = {The cache performance and optimizations of blocked algorithms},
+  booktitle = {Proceedings of the Fourth International Conference on Architectural Support for Programming Languages and Operating Systems (ASPLOS-IV)},
+  pages     = {63--74},
+  year      = {1991}
+}
+
+@book{hennessy2017,
+  author    = {John L. Hennessy and David A. Patterson},
+  title     = {Computer Architecture: A Quantitative Approach},
+  edition   = {6th},
+  publisher = {Morgan Kaufmann},
+  year      = {2017}
+}
+
+@misc{drepper2007,
+  author       = {Ulrich Drepper},
+  title        = {What Every Programmer Should Know About Memory},
+  howpublished = {Red Hat, Inc. technical report},
+  year         = {2007}
+}
+
+@article{williams2009,
+  author  = {Samuel Williams and Andrew Waterman and David Patterson},
+  title   = {Roofline: An insightful visual performance model for multicore architectures},
+  journal = {Communications of the ACM},
+  volume  = {52},
+  number  = {4},
+  pages   = {65--76},
+  year    = {2009}
+}
+
+@book{higham2002,
+  author    = {Nicholas J. Higham},
+  title     = {Accuracy and Stability of Numerical Algorithms},
+  edition   = {2nd},
+  publisher = {SIAM},
+  year      = {2002}
+}
+
+@book{golub2013,
+  author    = {Gene H. Golub and Charles F. Van Loan},
+  title     = {Matrix Computations},
+  edition   = {4th},
+  publisher = {Johns Hopkins University Press},
+  year      = {2013}
+}
+
+% ---------- Benchmarking methodology ----------
+@inproceedings{hoefler2015,
+  author    = {Torsten Hoefler and Roberto Belli},
+  title     = {Scientific benchmarking of parallel computing systems: Twelve ways to tell the masses when reporting performance results},
+  booktitle = {Proceedings of the International Conference for High Performance Computing, Networking, Storage and Analysis (SC '15)},
+  year      = {2015}
+}
+
+@inproceedings{georges2007,
+  author    = {Andy Georges and Dries Buytaert and Lieven Eeckhout},
+  title     = {Statistically rigorous {Java} performance evaluation},
+  booktitle = {Proceedings of the 22nd ACM SIGPLAN Conference on Object-Oriented Programming Systems, Languages and Applications (OOPSLA '07)},
+  pages     = {57--76},
+  year      = {2007}
+}
+
+@inproceedings{mytkowicz2009,
+  author    = {Todd Mytkowicz and Amer Diwan and Matthias Hauswirth and Peter F. Sweeney},
+  title     = {Producing wrong data without doing anything obviously wrong!},
+  booktitle = {Proceedings of the 14th International Conference on Architectural Support for Programming Languages and Operating Systems (ASPLOS XIV)},
+  year      = {2009}
+}
+
+@inproceedings{kalibera2013,
+  author    = {Tomas Kalibera and Richard Jones},
+  title     = {Rigorous benchmarking in reasonable time},
+  booktitle = {Proceedings of the 2013 International Symposium on Memory Management (ISMM '13)},
+  year      = {2013}
+}
+
+@misc{jmh,
+  author       = {{OpenJDK}},
+  title        = {{Java Microbenchmark Harness (JMH)}},
+  howpublished = {\url{https://github.com/openjdk/jmh}},
+  note         = {Accessed: YYYY-MM-DD}
+}
+
+% ---------- Python scientific stack (only if used, e.g. as a reference implementation) ----------
+@article{harris2020,
+  author  = {Charles R. Harris and others},
+  title   = {Array programming with {NumPy}},
+  journal = {Nature},
+  volume  = {585},
+  pages   = {357--362},
+  year    = {2020}
+}
+
+@article{virtanen2020,
+  author  = {Pauli Virtanen and others},
+  title   = {{SciPy} 1.0: Fundamental algorithms for scientific computing in {Python}},
+  journal = {Nature Methods},
+  volume  = {17},
+  pages   = {261--272},
+  year    = {2020}
+}
+
+% ---------- Sparse matrices ----------
+@article{gustavson1978,
+  author  = {Fred G. Gustavson},
+  title   = {Two fast algorithms for sparse matrices: Multiplication and permuted transposition},
+  journal = {ACM Transactions on Mathematical Software},
+  volume  = {4},
+  number  = {3},
+  pages   = {250--269},
+  year    = {1978}
+}
+
+@book{saad2003,
+  author    = {Yousef Saad},
+  title     = {Iterative Methods for Sparse Linear Systems},
+  edition   = {2nd},
+  publisher = {SIAM},
+  year      = {2003}
+}
+
+@article{davis2011,
+  author  = {Timothy A. Davis and Yifan Hu},
+  title   = {The {University of Florida} sparse matrix collection},
+  journal = {ACM Transactions on Mathematical Software},
+  volume  = {38},
+  number  = {1},
+  year    = {2011}
+}
+
+@article{buluc2012,
+  author  = {Ayd{\i}n Bulu{\c{c}} and John R. Gilbert},
+  title   = {Parallel sparse matrix-matrix multiplication and indexing: Implementation and experiments},
+  journal = {SIAM Journal on Scientific Computing},
+  volume  = {34},
+  number  = {4},
+  pages   = {C170--C191},
+  year    = {2012}
+}
+
+% ---------- Parallelism ----------
+@inproceedings{amdahl1967,
+  author    = {Gene M. Amdahl},
+  title     = {Validity of the single processor approach to achieving large scale computing capabilities},
+  booktitle = {Proceedings of the AFIPS Spring Joint Computer Conference},
+  pages     = {483--485},
+  year      = {1967}
+}
+
+@article{gustafson1988,
+  author  = {John L. Gustafson},
+  title   = {Reevaluating {Amdahl's} law},
+  journal = {Communications of the ACM},
+  volume  = {31},
+  number  = {5},
+  pages   = {532--533},
+  year    = {1988}
+}
+
+@article{dagum1998,
+  author  = {Leonardo Dagum and Ramesh Menon},
+  title   = {{OpenMP}: An industry standard {API} for shared-memory programming},
+  journal = {IEEE Computational Science and Engineering},
+  volume  = {5},
+  number  = {1},
+  pages   = {46--55},
+  year    = {1998}
+}
+
+% ---------- Distributed ----------
+@article{dean2008,
+  author  = {Jeffrey Dean and Sanjay Ghemawat},
+  title   = {{MapReduce}: Simplified data processing on large clusters},
+  journal = {Communications of the ACM},
+  volume  = {51},
+  number  = {1},
+  pages   = {107--113},
+  year    = {2008}
+}
+
+@article{zaharia2016,
+  author  = {Matei Zaharia and others},
+  title   = {{Apache Spark}: A unified engine for big data processing},
+  journal = {Communications of the ACM},
+  volume  = {59},
+  number  = {11},
+  pages   = {56--65},
+  year    = {2016}
+}
+
+@inproceedings{bosagh2016,
+  author    = {Reza Bosagh Zadeh and others},
+  title     = {Matrix computations and optimization in {Apache Spark}},
+  booktitle = {Proceedings of the 22nd ACM SIGKDD International Conference on Knowledge Discovery and Data Mining (KDD '16)},
+  pages     = {31--38},
+  year      = {2016}
+}
+
+@inproceedings{rocklin2015,
+  author    = {Matthew Rocklin},
+  title     = {Dask: Parallel computation with blocked algorithms and task scheduling},
+  booktitle = {Proceedings of the 14th Python in Science Conference (SciPy 2015)},
+  pages     = {126--132},
+  year      = {2015}
+}
+
+@article{vandegeijn1997,
+  author  = {Robert A. van de Geijn and Jerrell Watts},
+  title   = {{SUMMA}: Scalable universal matrix multiplication algorithm},
+  journal = {Concurrency: Practice and Experience},
+  volume  = {9},
+  number  = {4},
+  pages   = {255--274},
+  year    = {1997}
+}
+
+@phdthesis{cannon1969,
+  author = {Lynn Elliot Cannon},
+  title  = {A cellular computer to implement the {Kalman} filter algorithm},
+  school = {Montana State University},
+  year   = {1969}
+}
+
+@techreport{mpi40,
+  author      = {{Message Passing Interface Forum}},
+  title       = {{MPI}: A Message-Passing Interface Standard, Version 4.0},
+  institution = {Message Passing Interface Forum},
+  year        = {2021}
+}

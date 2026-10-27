@@ -1,0 +1,21 @@
+{
+  "description": "Pilot: 1 repetition, no warm-up, to check the pipeline end to end and estimate run times",
+  "prefix": "pilot_",
+  "raw_dir": "results/raw",
+  "input_dir": "data/inputs",
+  "timeout_s": 600,
+  "seed_dense": 42,
+  "seed_sparse": 1000,
+  "order_seed": 7,
+  "experiments": [
+    {"name": "block_sweep", "type": "dense", "methods": ["blocked_ikj"], "n": [1024],
+     "block_sizes": [16, 64, 256], "warmup": 0, "reps": 1},
+    {"name": "dense_size_sweep", "type": "dense", "methods": ["naive_ijk", "reorder_ikj", "blocked_ikj"],
+     "n": [256, 512, 1024], "block_size": 64, "warmup": 0, "reps": 1},
+    {"name": "sparse_density", "type": "sparse", "n": [2048], "patterns": ["uniform", "banded"],
+     "densities": [0.01, 0.1, 0.5], "modes": ["spgemm", "dense", "convert"], "block_size": 64,
+     "warmup": 0, "reps": 1},
+    {"name": "sparse_scaling", "type": "sparse", "n": [4096, 16384], "patterns": ["uniform"],
+     "densities": [0.001, 0.01], "modes": ["spgemm"], "block_size": 64, "warmup": 0, "reps": 1}
+  ]
+}

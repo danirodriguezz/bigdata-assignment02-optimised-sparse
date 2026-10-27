@@ -1,0 +1,41 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Builds
+build/
+target/
+bin/
+*.o
+*.class
+*.so
+
+# Large generated inputs (commit checksums + generator instead)
+data/inputs/*.bin
+data/inputs/*.npy
+data/inputs/*.mtx
+
+# LaTeX intermediates (keep main.pdf)
+report/*.aux
+report/*.bbl
+report/*.blg
+report/*.fdb_latexmk
+report/*.fls
+report/*.log
+report/*.out
+report/*.synctex.gz
+report/*.toc
+
+# Deliverables are built artefacts
+deliverables/
+
+# Local tooling
+.claude/settings.local.json
+.idea/
+.vscode/
+*.swp
+data/inputs/*.f64
+data/inputs/*.coo
+results/logs/
