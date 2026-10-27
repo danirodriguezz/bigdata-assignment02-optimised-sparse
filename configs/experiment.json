@@ -1,0 +1,31 @@
+{
+  "description": "Full Assignment 2 experiment (see docs/experiment_plan.md). Budgets: 600 s per process, 8 GiB address space per process, <= 90 min total.",
+  "prefix": "",
+  "raw_dir": "results/raw",
+  "input_dir": "data/inputs",
+  "timeout_s": 600,
+  "memory_limit_bytes": 8589934592,
+  "seed_dense": 42,
+  "seed_sparse": 1000,
+  "order_seed": 2026,
+  "experiments": [
+    {"name": "block_sweep", "type": "dense", "methods": ["blocked_ikj"], "n": [1024, 2048],
+     "block_sizes": [16, 32, 48, 64, 96, 128, 256], "warmup": 1, "reps": 5},
+    {"name": "dense_size_sweep", "type": "dense", "methods": ["naive_ijk", "reorder_ikj", "blocked_ikj"],
+     "n": [256, 512, 768, 1024, 1536, 2048, 3072, 4096],
+     "block_size": "auto", "bs_from": "block_sweep", "bs_tuning_n": 2048,
+     "warmup": 1, "reps": 5,
+     "warmup_by_n": {"3072": 0, "4096": 0}, "reps_by_n": {"3072": 3, "4096": 3}},
+    {"name": "sparse_density", "type": "sparse", "n": [2048], "patterns": ["uniform", "banded"],
+     "densities": [0.001, 0.005, 0.01, 0.02, 0.05, 0.1, 0.2, 0.3, 0.5, 0.7, 1.0],
+     "modes": ["spgemm", "dense", "convert"],
+     "block_size": "auto", "bs_from": "block_sweep", "bs_tuning_n": 2048,
+     "warmup": 1, "reps": 5},
+    {"name": "sparse_scaling", "type": "sparse", "n": [1024, 2048, 4096, 8192, 16384],
+     "patterns": ["uniform", "banded"], "densities": [0.001, 0.01], "modes": ["spgemm"],
+     "block_size": 64, "warmup": 1, "reps": 5},
+    {"name": "sparse_scaling_xl", "type": "sparse", "n": [32768],
+     "patterns": ["uniform", "banded"], "densities": [0.001], "modes": ["spgemm"],
+     "block_size": 64, "warmup": 1, "reps": 5}
+  ]
+}

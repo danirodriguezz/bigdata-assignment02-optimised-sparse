@@ -35,7 +35,9 @@ def log(msg):
     print(f"[{time.strftime('%H:%M:%S')}] {msg}", flush=True)
 
 
-def measured(out_csv, labels, cmd, timeout, dry):
+def measured(out_csv, labels, cmd, timeout, dry, mem_bytes=None):
+    if mem_bytes:   # enforce the memory budget: allocations beyond it fail -> recorded as oom
+        cmd = ["prlimit", f"--as={int(mem_bytes)}", "--"] + list(cmd)
     args = [sys.executable, str(RUN_MEASURED), "--out", str(out_csv), "--warmup", "0", "--reps", "1",
             "--timeout", str(timeout), "--label"] + [f"{k}={v}" for k, v in labels.items()] + \
            ["--env"] + ENV + ["--"] + [str(c) for c in cmd]
@@ -90,7 +92,7 @@ def run_dense(exp, cfg, args, rng):
                       "seed": seed}
             cmd = [ROOT / "build" / "bench_dense", "--method", method, "--n", n, "--a", pa, "--b", pb,
                    "--bs", bs or 64, "--warmup", warm, "--reps", reps]
-            rc = measured(out, labels, cmd, cfg["timeout_s"], args.dry_run)
+            rc = measured(out, labels, cmd, cfg["timeout_s"], args.dry_run, cfg.get("memory_limit_bytes"))
             if rc == 3:
                 failed.add(method)
 
@@ -127,7 +129,7 @@ def run_sparse(exp, cfg, args, rng):
                     reps = exp.get("reps_by_mode", {}).get(mode, exp["reps"])
                     cmd = [ROOT / "build" / "bench_sparse", "--mode", mode, "--a", pa, "--b", pb,
                            "--bs", bs, "--warmup", exp["warmup"], "--reps", reps]
-                    rc = measured(out, labels, cmd, cfg["timeout_s"], args.dry_run)
+                    rc = measured(out, labels, cmd, cfg["timeout_s"], args.dry_run, cfg.get("memory_limit_bytes"))
                     if rc == 3:
                         failed.add(key)
 
