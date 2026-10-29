@@ -1,0 +1,35 @@
+\begin{table}[t]
+\centering
+\caption{Sparse scaling with $n$ at fixed density (CSR SpGEMM only): median [IQR] over $k=5$ repetitions (1 warm-up excluded), peak RSS of the process (GNU time).}
+\label{tab:scaling}
+\scriptsize
+\setlength{\tabcolsep}{2.5pt}
+\begin{tabular}{@{}rlr rr r r@{}}
+\toprule
+$d$ [\%] & pattern & $n$ & nnz(A) & nnz(C) & SpGEMM median [IQR] & RSS [MiB] \\
+\midrule
+0.10 & uniform & 1024 & 1\,049 & 1\,119 & 24.9\,\textmu s [5.41\,\textmu s] & 1.91 \\
+0.10 & uniform & 2048 & 4\,194 & 8\,728 & 123\,\textmu s [4.49\,\textmu s] & 1.91 \\
+0.10 & uniform & 4096 & 16\,777 & 68\,536 & 586\,\textmu s [11.8\,\textmu s] & 3.09 \\
+0.10 & uniform & 8192 & 67\,109 & 546\,076 & 3.48\,ms [63.3\,\textmu s] & 10.5 \\
+0.10 & uniform & 16384 & 268\,435 & 4\,362\,757 & 41.9\,ms [4.05\,ms] & 62.0 \\
+0.10 & uniform & 32768 & 1\,073\,742 & 34\,608\,399 & 434\,ms [5.96\,ms] & 439 \\
+0.10 & banded & 1024 & 1\,049 & 1\,007 & 29.8\,\textmu s [4.57\,\textmu s] & 1.91 \\
+0.10 & banded & 2048 & 4\,194 & 6\,562 & 99.7\,\textmu s [3.42\,\textmu s] & 2.04 \\
+0.10 & banded & 4096 & 16\,777 & 32\,885 & 472\,\textmu s [13.5\,\textmu s] & 2.58 \\
+0.10 & banded & 8192 & 67\,109 & 135\,812 & 1.96\,ms [80.3\,\textmu s] & 5.34 \\
+0.10 & banded & 16384 & 268\,435 & 537\,939 & 9.48\,ms [176\,\textmu s] & 16.2 \\
+0.10 & banded & 32768 & 1\,073\,742 & 2\,127\,957 & 49.2\,ms [935\,\textmu s] & 59.3 \\
+1.0 & uniform & 1024 & 10\,486 & 102\,430 & 507\,\textmu s [35.2\,\textmu s] & 3.17 \\
+1.0 & uniform & 2048 & 41\,943 & 776\,711 & 4.44\,ms [200\,\textmu s] & 12.1 \\
+1.0 & uniform & 4096 & 167\,772 & 5\,638\,372 & 59.4\,ms [1.23\,ms] & 72.6 \\
+1.0 & uniform & 8192 & 671\,089 & 37\,528\,559 & 607\,ms [3.42\,ms] & 457 \\
+1.0 & uniform & 16384 & 2\,684\,355 & 216\,279\,824 & 4.71\,s [7.24\,ms] & 2579 \\
+1.0 & banded & 1024 & 10\,486 & 21\,075 & 311\,\textmu s [5.74\,\textmu s] & 2.15 \\
+1.0 & banded & 2048 & 41\,943 & 83\,335 & 1.64\,ms [13.0\,\textmu s] & 3.89 \\
+1.0 & banded & 4096 & 167\,772 & 345\,579 & 11.6\,ms [555\,\textmu s] & 10.7 \\
+1.0 & banded & 8192 & 671\,089 & 1\,344\,510 & 81.7\,ms [663\,\textmu s] & 37.5 \\
+1.0 & banded & 16384 & 2\,684\,355 & 5\,362\,984 & 631\,ms [1.21\,ms] & 145 \\
+\bottomrule
+\end{tabular}
+\end{table}

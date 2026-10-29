@@ -1,5 +1,17 @@
 # Progress / handoff — Assignment 02
 
+## Status 2026-10-29 (evening): ALL PHASES DONE (0–7)
+- Full benchmark: 126 process runs, 87 min wall / 49 min locked machine time, 125 ok + 1 timeout
+  (naive_ijk n=4096, 600 s budget). Raw data in `results/raw/`, log in `results/logs/full.log` (git-ignored).
+- Analysis: `make analysis` regenerates `results/summary/`, `report/figures/`, `report/generated/` from raw.
+- Report: `report/main.tex` complete (8 pages), compiled to `deliverables/Assignment02_RodriguezAlonso_Report.pdf`.
+- Review: `docs/review_checklist.md` (all items ✅/🔧; only the push is left to Daniel).
+- Oral defence notes: `docs/defensa_oral.md`.
+- Package: `deliverables/Assignment02_RodriguezAlonso_Materials.zip` built with `make package` (git archive of HEAD).
+- Submitted version: git tag `a2-submission`.
+- Only pending action (Daniel): add the remote and push (commands in the final chat message / README).
+
+---
 ## Update 2026-10-29 (resumed session)
 - Tests re-run: ALL CORRECTNESS TESTS PASSED. `analysis/make_all.py --prefix pilot_` runs without errors.
 - First launch on battery was stopped before any measurement (nothing written); Daniel plugged in AC;

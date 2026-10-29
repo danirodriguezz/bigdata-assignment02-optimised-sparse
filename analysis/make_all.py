@@ -100,7 +100,7 @@ def errbar(ax, x, s, label, color, marker, ls="-"):
 def write_table(path, header, rows, caption, label, colspec, wide=False, size="\\footnotesize", notes=None):
     env = "table*" if wide else "table"
     lines = [f"\\begin{{{env}}}[t]", "\\centering", f"\\caption{{{caption}}}", f"\\label{{{label}}}", size,
-             "\\setlength{\\tabcolsep}{3.5pt}", f"\\begin{{tabular}}{{{colspec}}}", "\\toprule",
+             "\\setlength{\\tabcolsep}{" + ("2.5pt" if "scriptsize" in size else "3.5pt") + "}", f"\\begin{{tabular}}{{{colspec}}}", "\\toprule",
              " & ".join(header) + " \\\\", "\\midrule"]
     for r in rows:
         lines.append(r if isinstance(r, str) else " & ".join(r) + " \\\\")
@@ -133,7 +133,7 @@ def part_a(prefix):
     ax.set_xticklabels([str(b) for b in sorted(bsw["bs"].unique())])
     ax.set_xlabel("Block size $b$")
     ax.set_ylabel("GFLOP/s ($2n^3/T$)")
-    ax.legend(loc="lower center")
+    ax.legend(loc="upper left")
     savefig(fig, FIG / "block_sweep")
     tuning_n = max(best)
     bs_star = best[tuning_n]
@@ -192,9 +192,9 @@ def part_a(prefix):
         a.set_xlabel("Matrix size $n$")
     ax.set_ylabel("Median kernel time [s]")
     ax2.set_ylabel("GFLOP/s ($2n^3/T$)")
-    ax2.set_ylim(bottom=0)
+    ax2.set_ylim(0, 6.3)
     ax.legend()
-    ax2.legend(loc="center right")
+    ax2.legend(loc="upper center", ncol=2, fontsize=6.5)
     savefig(fig, FIG / "dense_runtime")
     savefig(fig2, FIG / "dense_gflops")
 
@@ -267,7 +267,7 @@ def part_a(prefix):
                  "$k$", "RSS"],
                 rows,
                 f"Part A: kernel time, median [IQR] over $k$ measured repetitions, and GFLOP/s $=2n^3/T_{{med}}$. "
-                f"Blocked ikj uses $b=\\BestBs$. RSS = median peak resident set size [MiB] of the process "
+                f"Blocked ikj uses $b=\\val{{BestBs}}$. RSS = median peak resident set size [MiB] of the process "
                 f"(GNU time), all methods. $n\\le 2048$: 1 warm-up + $k=5$; $n\\ge 3072$: no warm-up, $k=3$.",
                 "tab:dense", "@{}r rr rr rr rr@{}", wide=True)
 
@@ -416,6 +416,16 @@ def part_b(prefix, S_dense):
     # SpGEMM cost per multiply-add: range and uniform/banded contrast at equal flops
     macro("NsMaddMin", fmt(R["ns_per_madd"].min(), 2))
     macro("NsMaddMax", fmt(R["ns_per_madd"].max(), 2))
+    # simple cost model: dense costs t_D/n^3 per multiply-add, SpGEMM costs c_S per multiply-add
+    # (c_S taken at d = 100 %, where the O(n) per-row overheads are negligible); uniform inputs have
+    # flops ~ d^2 n^3, so the predicted crossover is d* = sqrt((t_D/n^3) / c_S)
+    dense_ns = R["t_dense_med"].median() / n ** 3 * 1e9
+    macro("DenseNsMadd", fmt(dense_ns, 2))
+    for pat in ("uniform", "banded"):
+        top = R[R["pattern"] == pat].sort_values("density").iloc[-1]
+        macro(f"PredCross{pat.capitalize()}", fmt(np.sqrt(dense_ns / top["ns_per_madd"]) * 100, 2))
+    macro("SpEstHundred", fmt(R[R["density"] == 1.0]["mem_est_spgemm_mib"].median()))
+    macro("DeEst", fmt(R["mem_est_dense_mib"].median()))
 
     # --- figure: time vs density
     fig, ax = new_figure(height=2.5)
@@ -459,14 +469,14 @@ def part_b(prefix, S_dense):
     for pat in ("uniform", "banded"):
         Rp = R[R["pattern"] == pat].sort_values("density")
         ax.plot(Rp["density"] * 100, Rp["rss_spgemm_mib"], color=STYLE["csr"][0], linestyle=PATTERN_LS[pat],
-                marker=PATTERN_MK[pat], markersize=3.5, label=f"CSR SpGEMM process, {pat}")
+                marker=PATTERN_MK[pat], markersize=3.5, label=f"CSR SpGEMM, {pat}")
         ax.plot(Rp["density"] * 100, Rp["rss_dense_mib"], color=STYLE["dense"][0], linestyle=PATTERN_LS[pat],
-                marker="^", markersize=3.5, label=f"dense process, {pat}")
+                marker="^", markersize=3.5, label=f"dense blocked, {pat}")
     ax.set_xscale("log")
     ax.set_yscale("log")
     ax.set_xlabel("Input density $d$ [%]")
     ax.set_ylabel("Peak RSS [MiB] (GNU time)")
-    ax.legend(fontsize=6)
+    ax.legend(fontsize=6, loc="upper center", bbox_to_anchor=(0.5, -0.25), ncol=2)
     savefig(fig, FIG / "sparse_memory")
 
     # --- table (both patterns)
@@ -535,7 +545,7 @@ def part_b_scaling(prefix, S_dense):
             if not ns:
                 continue
             s = [stats(g[g["n"] == n]["time_s"]) for n in ns]
-            errbar(ax, ns, s, f"CSR, $d$={fmt(d * 100, 2)}\\%, {pat}", colors[d], PATTERN_MK[pat], PATTERN_LS[pat])
+            errbar(ax, ns, s, f"CSR, $d$={fmt(d * 100, 2)}%, {pat}", colors[d], PATTERN_MK[pat], PATTERN_LS[pat])
             for n, st in zip(ns, s):
                 gn = g[g["n"] == n]
                 rows.append({"density": d, "pattern": pat, "n": n, "median": st["median"],
@@ -550,7 +560,7 @@ def part_b_scaling(prefix, S_dense):
     ax.set_yscale("log")
     ax.set_xlabel("Matrix size $n$")
     ax.set_ylabel("Median time [s]")
-    ax.legend(fontsize=5.5, loc="upper left")
+    ax.legend(fontsize=6, loc="upper center", bbox_to_anchor=(0.5, -0.25), ncol=2)
     savefig(fig, FIG / "sparse_scaling")
     T = pd.DataFrame(rows)
     T.to_csv(SUM / "sparse_scaling_summary.csv", index=False)
@@ -578,11 +588,12 @@ def part_b_scaling(prefix, S_dense):
     for _, r in T.sort_values(["density", "pattern", "n"], ascending=[True, False, True]).iterrows():
         trows.append([fmt(r["density"] * 100, 2), r["pattern"], str(int(r["n"])),
                       f"{int(r['nnz_a']):,}".replace(",", "\\,"), f"{int(r['nnz_c']):,}".replace(",", "\\,"),
-                      f"{fmt_t(r['median'])} [{fmt_t(r['iqr'])}]", str(int(r["k"])), fmt(r["rss_mib"])])
-    write_table("table_scaling.tex", ["$d$ [\\%]", "pattern", "$n$", "nnz(A)", "nnz(C)", "SpGEMM median [IQR]", "$k$",
+                      f"{fmt_t(r['median'])} [{fmt_t(r['iqr'])}]", fmt(r["rss_mib"])])
+    write_table("table_scaling.tex", ["$d$ [\\%]", "pattern", "$n$", "nnz(A)", "nnz(C)", "SpGEMM median [IQR]",
                                       "RSS [MiB]"], trows,
-                "Sparse scaling with $n$ at fixed density (CSR SpGEMM only): median [IQR] over $k$ repetitions, "
-                "peak RSS of the process (GNU time).", "tab:scaling", "@{}rlr rr rr r@{}", size="\\scriptsize")
+                "Sparse scaling with $n$ at fixed density (CSR SpGEMM only): median [IQR] over $k=5$ repetitions "
+                "(1 warm-up excluded), "
+                "peak RSS of the process (GNU time).", "tab:scaling", "@{}rlr rr r r@{}", size="\\scriptsize")
     return T
 
 
@@ -615,6 +626,7 @@ def main():
     summ.to_csv(SUM / "summary.csv", index=False)
     limits(summ, gcols).to_csv(SUM / "limits.csv", index=False)
     macro("NRawRows", str(len(df)))
+    macro("NProcRuns", str(df["run_id"].nunique()))
     macro("NMeasuredRows", str(int(((df["is_warmup"] == 0) & (df["status"] == "ok")).sum())))
     macro("NFailedRows", str(int((df["status"] != "ok").sum())))
     macro("LoadMax", fmt(df["loadavg_1m"].astype(float).max(), 2))

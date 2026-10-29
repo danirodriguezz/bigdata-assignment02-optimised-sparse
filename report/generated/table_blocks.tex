@@ -1,0 +1,20 @@
+\begin{table}[t]
+\centering
+\caption{Block-size study for blocked ikj: median kernel time [IQR] over $k=5$ repetitions (1 warm-up excluded). $^\ast$ = fastest; the rule selects the fastest $b$ at $n=2048$.}
+\label{tab:blocks}
+\footnotesize
+\setlength{\tabcolsep}{3.5pt}
+\begin{tabular}{@{}rrr@{}}
+\toprule
+$b$ & $n=1024$: median [IQR] & $n=2048$: median [IQR] \\
+\midrule
+16 & 577\,ms [782\,\textmu s] & 4.88\,s [473\,ms] \\
+32 & 625\,ms [9.97\,ms] & 5.47\,s [89.9\,ms] \\
+48 & 624\,ms [1.86\,ms] & 5.14\,s [26.7\,ms] \\
+64 & 630\,ms [2.92\,ms] & 4.79\,s [8.05\,ms] \\
+96 & 580\,ms [1.92\,ms] & 4.62\,s [14.9\,ms] \\
+128 & 516\,ms [1.92\,ms] & 4.38\,s [20.2\,ms] \\
+256 & 491\,ms$^\ast$ [1.62\,ms] & 3.93\,s$^\ast$ [25.9\,ms] \\
+\bottomrule
+\end{tabular}
+\end{table}

@@ -1,0 +1,21 @@
+\begin{table*}[t]
+\centering
+\caption{Part A: kernel time, median [IQR] over $k$ measured repetitions, and GFLOP/s $=2n^3/T_{med}$. Blocked ikj uses $b=\val{BestBs}$. RSS = median peak resident set size [MiB] of the process (GNU time), all methods. $n\le 2048$: 1 warm-up + $k=5$; $n\ge 3072$: no warm-up, $k=3$.}
+\label{tab:dense}
+\footnotesize
+\setlength{\tabcolsep}{3.5pt}
+\begin{tabular}{@{}r rr rr rr rr@{}}
+\toprule
+$n$ & naive: median [IQR] & GF/s & ikj: median [IQR] & GF/s & blocked: median [IQR] & GF/s & $k$ & RSS \\
+\midrule
+256 & 20.7\,ms [58.5\,\textmu s] & 1.62 & 8.97\,ms [131\,\textmu s] & 3.74 & 6.99\,ms [10.8\,\textmu s] & 4.80 & 5 & 3.02 \\
+512 & 180\,ms [730\,\textmu s] & 1.49 & 72.6\,ms [714\,\textmu s] & 3.70 & 58.9\,ms [526\,\textmu s] & 4.56 & 5 & 7.52 \\
+768 & 540\,ms [368\,\textmu s] & 1.68 & 245\,ms [706\,\textmu s] & 3.70 & 203\,ms [714\,\textmu s] & 4.45 & 5 & 15.0 \\
+1024 & 1.57\,s [3.68\,ms] & 1.36 & 605\,ms [1.74\,ms] & 3.55 & 469\,ms [1.93\,ms] & 4.58 & 5 & 25.5 \\
+1536 & 9.89\,s [131\,ms] & 0.733 & 2.48\,s [54.4\,ms] & 2.92 & 1.58\,s [17.9\,ms] & 4.57 & 5 & 55.5 \\
+2048 & 39.2\,s [258\,ms] & 0.438 & 5.89\,s [64.5\,ms] & 2.91 & 4.13\,s [176\,ms] & 4.16 & 5 & 97.5 \\
+3072 & 170\,s [3.51\,s] & 0.340 & 20.4\,s [191\,ms] & 2.85 & 14.1\,s [146\,ms] & 4.10 & 3 & 218 \\
+4096 & \multicolumn{2}{c}{timeout ($>$600\,s)} & 46.5\,s [125\,ms] & 2.96 & 29.7\,s [20.2\,ms] & 4.63 & 3 & 386 \\
+\bottomrule
+\end{tabular}
+\end{table*}

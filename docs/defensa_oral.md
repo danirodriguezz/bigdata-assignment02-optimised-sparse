@@ -83,8 +83,34 @@ memset(C, 0); for i: for k: a = A[i*n+k]; for j: C[i*n+j] += a * B[k*n+j];
 - Presupuestos: 600 s por proceso (si no → `timeout`), 8 GiB por proceso con `prlimit` (si no → `oom`),
   ≤ 90 min en total.
 
-## 6. Resultados más informativos
-(se completa con los números del run completo)
+## 6. Resultados más informativos (todos de `results/raw/`, run del 29/10/2026, 87 min, 125 ok + 1 timeout)
+1. **Parte A — speedups crecen con n.** Frente a naive: i-k-j 2,20–8,37×, blocked (b=256) 2,65–12,0×
+   (n=3072: 170 s naive vs 14,1 s blocked, IC 95 % [11,9; 12,7]). **Naive no completa n=4096 en 600 s**
+   (timeout); i-k-j (46,5 s) y blocked (29,7 s) sí → mayor tamaño factible: naive 3072, optimizados 4096.
+   - GFLOP/s: naive cae de 1,68 a 0,34 (exponente 3,97 ≫ 3 → limitado por memoria); i-k-j cae de ~3,7 a
+     ~2,9 justo entre n=1024 y 1536 (**B pasa de 8 MiB a 18 MiB y deja de caber en la L3 de 12 MiB**);
+     blocked se mantiene en 4,1–4,8.
+   - **Matiz honesto:** blocked ya es 1,28× más rápido que i-k-j a n=256, donde b=n → un solo tile, mismo
+     orden de iteración. Esa parte NO es caché; los bucles internos solo difieren en aritmética de
+     direcciones (conjetura, sin contadores). La parte de caché es la subida a 1,43–1,56× para n ≥ 1536.
+   - Block size: no monótono (dispersión 39 % a n=2048); el mejor es b=256, **el borde de la rejilla** →
+     el óptimo podría ser mayor (limitación).
+2. **Parte B — crossover ≈ 55 % de densidad** (n=2048): SpGEMM gana a denso hasta el 50 % (1,19× uniforme,
+   1,21× banda) y pierde desde el 70 % (a 100 %: 0,30×). Mismo resultado en ambos patrones.
+   - **Modelo de coste que lo explica:** denso = 0,44 ns por multiply-add × n³; SpGEMM ≈ 1,4 ns por
+     multiply-add × d²n³ → d* = √(0,44/1,4) ≈ 55 %. Es decir, el crossover lo fija el **cociente de coste
+     por operación**, no el % de ceros. Con un kernel denso vectorizado (BLAS) el crossover bajaría.
+   - Memoria: CSR usa menos RSS hasta el 30 %, más desde el 50 % (12 B por entrada en CSR vs 8 B en denso,
+     y la salida uniforme es 100 % densa desde d≈5 %: 2·12dn² + 12n² = 24n² en d = 50 %).
+3. **Dónde se pierde la ventaja dispersa (H4):**
+   - Conversiones: 11–48 ms dense→CSR, 1–6 ms CSR→dense. Irrelevantes cerca del crossover, pero a d=0,1 %
+     son el 99 % del tiempo total y bajan la ventaja de 31 937× a 288×.
+   - Overheads por fila: 14 ns por multiply-add a d=0,1 % vs ~1,4 ns a densidad alta (inicialización O(n)).
+   - **Fill-in y patrón:** mismos flops (ratio 0,96–1,02) pero a d=2 % la salida uniforme tiene 13,7× más
+     no-ceros y tarda 4,42× más que la de banda. A n=16384, d=1 %: uniforme 4,71 s y 2,58 GiB; banda
+     0,63 s y 145 MiB. → **La densidad sola no determina el rendimiento.**
+4. Escalado disperso: a d=0,1 % SpGEMM llega a n=32768 (0,43 s uniforme, 439 MiB), tamaño en el que el
+   denso necesitaría 24 GiB (no intentado, fuera del presupuesto de 8 GiB).
 
 ## 7. Limitaciones (decirlas antes de que las pregunten)
 - Una sola máquina (portátil), governor `powersave` con turbo → frecuencia no fijada.
@@ -100,10 +126,21 @@ memset(C, 0); for i: for k: a = A[i*n+k]; for j: C[i*n+j] += a * B[k*n+j];
 - **¿Por qué i-k-j es más rápido si hace las mismas operaciones?** Por el patrón de acceso a memoria
   (stride 1 en lugar de 8n bytes): cada línea de caché de 64 B trae 8 doubles útiles en vez de 1. Las
   operaciones son idénticas (2n³) y ninguno de los dos kernels está vectorizado.
-- **¿Por qué el blocking no gana siempre a i-k-j?** (completar con resultados) — el prefetcher hardware ya
-  maneja bien el stride 1 de i-k-j; el blocking añade overhead de bucles y bucles internos más cortos.
-- **¿Qué es el "crossover"?** La densidad a partir de la cual el denso es más rápido que SpGEMM. No depende
-  solo del % de ceros: depende del patrón (fill-in de C, localidad) y de si se cuentan conversiones.
+- **¿Cuánto aporta el blocking sobre i-k-j?** 1,2–1,3× a todos los tamaños (no es caché: aparece con un
+  solo tile a n=256) y 1,43–1,56× cuando B ya no cabe en L3 (n ≥ 1536). Solo esa subida es atribuible a
+  la reutilización en caché.
+- **¿Por qué b=256 y no b=64 si 3·8·64² cabe en L2?** Porque lo medí: la regla declarada elige la mediana
+  más rápida a n=2048. La predicción "cabe en L2" no se cumplió; el óptimo está en el borde de la rejilla.
+- **¿Qué es el "crossover"?** La densidad a partir de la cual el denso es más rápido que SpGEMM (≈55 % aquí).
+  Lo fija el cociente de coste por operación de los dos kernels; el patrón cambia mucho el coste a densidad
+  baja/media (fill-in, localidad) aunque aquí ambos cruzan en el mismo intervalo 50–70 %.
+- **¿Por qué el naive no llega a 4096?** El presupuesto es 600 s por proceso; a n=3072 ya tardaba 170 s y
+  extrapolando con el exponente 3,97 serían ≈530 s **por repetición** en 4096; el proceso (k=3, sin
+  warm-up) no terminó en 600 s y se registró como `timeout` sin tiempo. No se reporta ningún tiempo
+  parcial (sería inventar/mezclar fronteras).
+- **¿La variabilidad?** IQR relativo mediano 0,66 % (denso). Pero entre procesos el mismo kernel a n=2048
+  varió hasta un 15 % (3,59–4,13 s) → lo declaro como limitación: el IQR intra-proceso subestima la
+  variación entre sesiones.
 - **¿Por qué C se vuelve más densa?** Para entradas uniformes, P(C_ij ≠ 0) ≈ 1 − (1 − d²)ⁿ; con n=2048 y
   d=5 % ya casi todo C es no nulo.
 - **¿Qué incluye el tiempo de SpGEMM?** Fase simbólica + reserva de C + fase numérica; las entradas ya están

@@ -1,0 +1,4 @@
+method,largest_completed_n,largest_attempted_n,failure
+naive_ijk,3072,4096,timeout at n=4096
+reorder_ikj,4096,4096,none
+blocked_ikj,4096,4096,none
