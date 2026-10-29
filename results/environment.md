@@ -1,6 +1,6 @@
 # Execution environment
 
-Captured: 2026-10-27T22:39:59+00:00 on host `daniel-Creator-15M-A9SD`
+Captured: 2026-10-29T16:55:35+00:00 on host `daniel-Creator-15M-A9SD`
 
 ## CPU (lscpu)
 
@@ -11,7 +11,7 @@ Model name:                              Intel(R) Core(TM) i7-9750H CPU @ 2.60GH
 Thread(s) per core:                      2
 Core(s) per socket:                      6
 Socket(s):                               1
-CPU(s) scaling MHz:                      53%
+CPU(s) scaling MHz:                      80%
 CPU max MHz:                             4500.0000
 CPU min MHz:                             800.0000
 L1d cache:                               192 KiB (6 instances)
@@ -35,7 +35,7 @@ AC power online (1=plugged): 1
 
 ```
                total       usado       libre  compartido   búf/caché  disponible
-Mem:            15Gi       4,9Gi       3,0Gi       694Mi       8,5Gi        10Gi
+Mem:            15Gi       3,1Gi         9Gi       357Mi       3,1Gi        12Gi
 Inter:         7,6Gi          0B       7,6Gi
 ```
 
@@ -152,5 +152,5 @@ xkit==0.0.0
 ## Load at capture time
 
 ```
- 22:40:00 up  6:25,  1 user,  load average: 1,12, 0,56, 0,27
+ 16:55:36 up 4 min,  1 user,  load average: 1,63, 1,14, 0,50
 ```

@@ -24,3 +24,36 @@
 | seed, checksum | input seed; sum of result (consumes the output) | – |
 | loadavg_1m | 1-minute load average when the run started | – |
 | cmd, extra_json | exact command; additional program fields (JSON) | – |
+
+## Assignment 2 specifics
+
+### Raw files
+| File | Experiment |
+|---|---|
+| `raw/block_sweep.csv` | blocked_ikj, b ∈ {16,32,48,64,96,128,256}, n ∈ {1024, 2048} |
+| `raw/dense_size_sweep.csv` | naive_ijk, reorder_ikj, blocked_ikj(b*) for n = 256 … 4096 |
+| `raw/sparse_density.csv` | n = 2048, uniform/banded, d = 0.1 … 100 %: modes spgemm, dense, convert |
+| `raw/sparse_scaling.csv`, `raw/sparse_scaling_xl.csv` | CSR SpGEMM only, d ∈ {0.1, 1} %, n = 1024 … 32768 |
+| `raw/pilot_*.csv` | pilot (1 rep, no warm-up) — planning only, never used in the report |
+
+### `timer_boundary` values
+| Value | What is inside the timer |
+|---|---|
+| `kernel` | one dense kernel call (inputs loaded, C allocated before the timer) |
+| `spgemm_kernel` | CSR × CSR → CSR: symbolic phase + allocation of C + numeric phase (inputs already CSR) |
+| `dense_kernel` | blocked ikj kernel on the densified sparse inputs (same boundary as `kernel`) |
+| `convert_dense_to_csr` | dense → CSR of **both** inputs |
+| `convert_csr_to_dense` | CSR output → dense array |
+
+### `extra_json` keys
+| Key | Meaning |
+|---|---|
+| `block_size` | b used by blocked_ikj (0 for methods without blocking) |
+| `gflops` | 2n³ / time_s / 1e9 (dense kernels) |
+| `n`, `nnz_a`, `nnz_b` | matrix side, stored nonzeros of A and B |
+| `nnz_c` | stored (structural) nonzeros of the CSR output |
+| `nnz_c_numeric` | numerically nonzero entries of the dense output |
+| `flops_madd` | scalar multiply-adds of SpGEMM: Σ over a_ik ≠ 0 of nnz(B(k,:)) |
+
+`memory_metric = array_storage_estimate`: analytical bytes of the arrays the mode needs
+(dense 3·8n²; CSR 12·nnz + 8(n+1) per matrix + 12n accumulator). It is never mixed with `peak_rss_kib`.

@@ -1,1 +1,143 @@
-% Verified references only (see scientific-report skill). Add DOI after verifying each entry.
+% Verified references for Assignment 02 (metadata checked against Crossref / publisher pages on
+% 2026-10-27 and re-checked via api.crossref.org on 2026-10-29). Only entries cited in main.tex.
+
+@article{gustavson1978,
+  author  = {Fred G. Gustavson},
+  title   = {Two fast algorithms for sparse matrices: Multiplication and permuted transposition},
+  journal = {ACM Transactions on Mathematical Software},
+  volume  = {4},
+  number  = {3},
+  pages   = {250--269},
+  year    = {1978},
+  doi     = {10.1145/355791.355796}
+}
+
+@inproceedings{lam1991,
+  author    = {Monica D. Lam and Edward E. Rothberg and Michael E. Wolf},
+  title     = {The cache performance and optimizations of blocked algorithms},
+  booktitle = {Proceedings of the Fourth International Conference on Architectural Support for Programming Languages and Operating Systems (ASPLOS-IV)},
+  pages     = {63--74},
+  year      = {1991},
+  doi       = {10.1145/106972.106981}
+}
+
+@article{goto2008,
+  author  = {Kazushige Goto and Robert A. van de Geijn},
+  title   = {Anatomy of high-performance matrix multiplication},
+  journal = {ACM Transactions on Mathematical Software},
+  volume  = {34},
+  number  = {3},
+  pages   = {1--25},
+  year    = {2008},
+  doi     = {10.1145/1356052.1356053}
+}
+
+@article{buluc2012,
+  author  = {Ayd{\i}n Bulu{\c{c}} and John R. Gilbert},
+  title   = {Parallel sparse matrix-matrix multiplication and indexing: Implementation and experiments},
+  journal = {SIAM Journal on Scientific Computing},
+  volume  = {34},
+  number  = {4},
+  pages   = {C170--C191},
+  year    = {2012},
+  doi     = {10.1137/110848244}
+}
+
+@article{strassen1969,
+  author  = {Volker Strassen},
+  title   = {Gaussian elimination is not optimal},
+  journal = {Numerische Mathematik},
+  volume  = {13},
+  number  = {4},
+  pages   = {354--356},
+  year    = {1969},
+  doi     = {10.1007/BF02165411}
+}
+
+@book{higham2002,
+  author    = {Nicholas J. Higham},
+  title     = {Accuracy and Stability of Numerical Algorithms},
+  edition   = {2nd},
+  publisher = {SIAM},
+  address   = {Philadelphia, PA},
+  year      = {2002},
+  doi       = {10.1137/1.9780898718027}
+}
+
+@book{saad2003,
+  author    = {Yousef Saad},
+  title     = {Iterative Methods for Sparse Linear Systems},
+  edition   = {2nd},
+  publisher = {SIAM},
+  address   = {Philadelphia, PA},
+  year      = {2003},
+  doi       = {10.1137/1.9780898718003}
+}
+
+@article{harris2020,
+  author  = {Charles R. Harris and others},
+  title   = {Array programming with {NumPy}},
+  journal = {Nature},
+  volume  = {585},
+  number  = {7825},
+  pages   = {357--362},
+  year    = {2020},
+  doi     = {10.1038/s41586-020-2649-2}
+}
+
+@article{virtanen2020,
+  author  = {Pauli Virtanen and others},
+  title   = {{SciPy} 1.0: Fundamental algorithms for scientific computing in {Python}},
+  journal = {Nature Methods},
+  volume  = {17},
+  number  = {3},
+  pages   = {261--272},
+  year    = {2020},
+  doi     = {10.1038/s41592-019-0686-2}
+}
+
+@inproceedings{hoefler2015,
+  author    = {Torsten Hoefler and Roberto Belli},
+  title     = {Scientific benchmarking of parallel computing systems: Twelve ways to tell the masses when reporting performance results},
+  booktitle = {Proceedings of the International Conference for High Performance Computing, Networking, Storage and Analysis (SC '15)},
+  pages     = {1--12},
+  year      = {2015},
+  doi       = {10.1145/2807591.2807644}
+}
+
+@inproceedings{mytkowicz2009,
+  author    = {Todd Mytkowicz and Amer Diwan and Matthias Hauswirth and Peter F. Sweeney},
+  title     = {Producing wrong data without doing anything obviously wrong!},
+  booktitle = {Proceedings of the 14th International Conference on Architectural Support for Programming Languages and Operating Systems (ASPLOS XIV)},
+  pages     = {265--276},
+  year      = {2009},
+  doi       = {10.1145/1508244.1508275}
+}
+
+@article{williams2009,
+  author  = {Samuel Williams and Andrew Waterman and David Patterson},
+  title   = {Roofline: An insightful visual performance model for multicore architectures},
+  journal = {Communications of the ACM},
+  volume  = {52},
+  number  = {4},
+  pages   = {65--76},
+  year    = {2009},
+  doi     = {10.1145/1498765.1498785}
+}
+
+@book{hennessy2017,
+  author    = {John L. Hennessy and David A. Patterson},
+  title     = {Computer Architecture: A Quantitative Approach},
+  edition   = {6th},
+  publisher = {Morgan Kaufmann},
+  address   = {Cambridge, MA},
+  year      = {2017},
+  note      = {ISBN 978-0-12-811905-1}
+}
+
+@misc{gcc12,
+  author       = {{GCC Team}},
+  title        = {{GCC} 12 Release Series: Changes, New Features, and Fixes},
+  howpublished = {\url{https://gcc.gnu.org/gcc-12/changes.html}},
+  note         = {Section ``General improvements'': vectorization enabled at -O2 with the very-cheap cost model. Accessed: 2026-10-29}
+}
