@@ -20,3 +20,5 @@ Sibling assignments read this file to stay consistent.
 | 2026-10-29 | GitHub repo name | `bigdata-assignment02-optimised-sparse` (Daniel creates and pushes) | Recommended default |
 | 2026-10-29 | GitHub repository | `git@github.com:danirodriguezz/bigdata-assignment02-optimised-sparse.git` (same GitHub user as A1; Daniel creates the repo and pushes) | Agent (from A1 DECISIONS) |
 | 2026-10-29 | SIMD | Assembly + `-fopt-info-vec-all` show no kernel is vectorised at -O2 (scalar mulsd/addsd); kept as is (comparison isolates memory-order effects); plan statement corrected | Agent (verified) |
+| 2026-10-29 | Generative-AI statement | Confirmed as written in report/README (Claude Code, Anthropic, model Claude Opus 5.5) | Daniel |
+| 2026-10-29 | GitHub repository | Created by Daniel: `git@github.com:danirodriguezz/bigdata-assignment02-optimised-sparse.git` (agent does not add remotes or push) | Daniel |

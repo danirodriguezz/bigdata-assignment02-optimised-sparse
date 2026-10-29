@@ -1,0 +1,15 @@
+{
+ "kind": "sparse_coo",
+ "n": 2048,
+ "density_declared": 0.2,
+ "nnz": 838861,
+ "density_actual": 0.20000004768371582,
+ "pattern": "uniform",
+ "seed": 201000,
+ "dtype": "float64",
+ "index_dtype": "int32",
+ "distribution": "uniform[-1,1) (zeros redrawn)",
+ "generator": "numpy.random.default_rng (PCG64), numpy 2.5.4",
+ "sha256": "7dbe69cf39a647e95a2f5d2221fbe231d40ba6b07008fbdc5a412c31e9e4385d",
+ "file": "sparse_uniform_n2048_d0p2_s201000.coo"
+}

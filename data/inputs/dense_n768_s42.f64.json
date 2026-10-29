@@ -1,0 +1,11 @@
+{
+ "kind": "dense",
+ "n": 768,
+ "seed": 42,
+ "dtype": "float64",
+ "layout": "row-major",
+ "distribution": "uniform[-1,1)",
+ "generator": "numpy.random.default_rng (PCG64), numpy 2.5.4",
+ "sha256": "bab7ac6172f1c262e69d8c13dbada23a58eeb1face2b1588ae3f57b123838229",
+ "file": "dense_n768_s42.f64"
+}

@@ -1,0 +1,18 @@
+{
+ "kind": "sparse_coo",
+ "n": 2048,
+ "density_declared": 0.3,
+ "nnz": 1258291,
+ "density_actual": 0.2999999523162842,
+ "pattern": "banded",
+ "seed": 301000,
+ "dtype": "float64",
+ "index_dtype": "int32",
+ "distribution": "uniform[-1,1) (zeros redrawn)",
+ "generator": "numpy.random.default_rng (PCG64), numpy 2.5.4",
+ "half_bandwidth": 335,
+ "band_positions": 1261648,
+ "band_fill_fraction": 0.9973391944504331,
+ "sha256": "3c967c3ed98226f74a1960945e74311d675be8186c87d86a3e9cfd99050c738a",
+ "file": "sparse_banded_n2048_d0p3_s301000.coo"
+}
