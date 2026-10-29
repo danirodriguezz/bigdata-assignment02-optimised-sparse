@@ -26,7 +26,7 @@ Outcomes: kernel time (median, IQR), GFLOP/s, peak RSS, analytical storage, nnz(
 | id | change vs baseline |
 |---|---|
 | naive_ijk | baseline, scalar dot product per C(i,j); B read down a column |
-| reorder_ikj | loop order i-k-j, unit stride on B and C; auto-vectorisable at -O2 (gcc >= 12) |
+| reorder_ikj | loop order i-k-j, unit stride on B and C (2026-10-29: assembly check shows it is NOT vectorised at -O2; all kernels scalar) |
 | blocked_ikj(b) | i, k, j tiled in b x b tiles, i-k-j inside a tile |
 | csr_gustavson | own CSR + two-phase Gustavson SpGEMM (marker array + dense accumulator), output unsorted |
 | dense_blocked_ikj | best dense kernel (blocked_ikj, b from the study) on the densified sparse inputs |

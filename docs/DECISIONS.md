@@ -18,3 +18,5 @@ Sibling assignments read this file to stay consistent.
 | 2026-10-27 | Memory enforcement | Every benchmark process wrapped in `prlimit --as=8 GiB`; allocation failure → `oom` row | Agent |
 | 2026-10-29 | Power | Full run started only after AC power was connected (environment.md captured on AC) | Daniel |
 | 2026-10-29 | GitHub repo name | `bigdata-assignment02-optimised-sparse` (Daniel creates and pushes) | Recommended default |
+| 2026-10-29 | GitHub repository | `git@github.com:danirodriguezz/bigdata-assignment02-optimised-sparse.git` (same GitHub user as A1; Daniel creates the repo and pushes) | Agent (from A1 DECISIONS) |
+| 2026-10-29 | SIMD | Assembly + `-fopt-info-vec-all` show no kernel is vectorised at -O2 (scalar mulsd/addsd); kept as is (comparison isolates memory-order effects); plan statement corrected | Agent (verified) |

@@ -1,5 +1,20 @@
 # Progress / handoff — Assignment 02
 
+## Update 2026-10-29 (resumed session)
+- Tests re-run: ALL CORRECTNESS TESTS PASSED. `analysis/make_all.py --prefix pilot_` runs without errors.
+- First launch on battery was stopped before any measurement (nothing written); Daniel plugged in AC;
+  `results/environment.md` re-captured on AC; full benchmark launched 16:55 →
+  `results/logs/full.log`, rows in `results/raw/{block_sweep,dense_size_sweep,sparse_*}.csv`.
+- Done this session: `report/references.bib` (14 entries, re-verified on Crossref), README.md,
+  results/README.md (A2 boundaries + extra_json), DECISIONS.md (technical decisions), report Intro,
+  Background, Methodology.
+- Next: when the benchmark ends → `make analysis` → write Results/Discussion/Conclusions/abstract with
+  `\val{}` macros → `make report` → report-review → defensa_oral.md → commit → `make package`.
+
+---
+(previous handoff, 2026-10-27)
+
+
 **Stopped:** 2026-10-27T23:05 (local machine time), at Daniel's request (via coordinator).
 **No process of this assignment is running**: the pilot finished by itself (all 22 sparse-pilot and 12 dense-pilot
 configurations rc=0) and nothing else was launched. The full benchmark has **not** started.

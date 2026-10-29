@@ -89,7 +89,9 @@ percentage of zero entries. The hypotheses below were written before the full be
 \end{itemize}
 The comparison is sequential (one thread) and in C for every method. Assignment~1 did not yet provide a
 validated C kernel when this work started, so an equivalent naive baseline was implemented and validated
-here (\cref{sec:impl}).
+here (\cref{sec:impl}). Assignment~1 has since added a C kernel with the same i-j-k loop, scalar
+accumulator and compiler flags (repository \texttt{bigdata-assignment01-matmul-languages}, commit
+\texttt{dfb18bf}); the baseline of this study remains the one validated here.
 
 % ------------------------------------------------------------------ Background
 \section{Background and Related Work}
@@ -99,8 +101,9 @@ row $i$ of $A$ and column $j$ of $B$; with row-major storage, consecutive iterat
 $B$ with a stride of $8n$ bytes, so almost every access to $B$ touches a different cache line once $B$ no
 longer fits in cache~\cite{hennessy2017}. Interchanging the two inner loops (i-k-j) turns the inner loop into
 an update $C_{i,:} \mathrel{+}= a_{ik}B_{k,:}$ with unit stride on $B$ and $C$, the same arithmetic in a
-different order; such a loop is a candidate for SIMD vectorisation, which gcc enables at \texttt{-O2} since
-version~12~\cite{gcc12}. Cache blocking (tiling) partitions the iteration space into $b\times b$ tiles so
+different order. Such a loop is a candidate for SIMD vectorisation, which gcc enables at \texttt{-O2} since
+version~12, but only under a ``very-cheap'' cost model~\cite{gcc12}; for the kernels of this study it does
+not apply (\cref{sec:impl}). Cache blocking (tiling) partitions the iteration space into $b\times b$ tiles so
 that the working set of a tile update ($\approx 3\cdot 8b^2$ bytes) is reused while it stays in cache; Lam
 et al.\ showed that the benefit depends strongly on the block size and on cache interference~\cite{lam1991}.
 High-performance libraries combine blocking for every cache level with packing and register-level
@@ -135,7 +138,7 @@ of \texttt{src/c/dense/matmul\_dense.h}:
 \begin{itemize}
 \item \texttt{naive\_ijk} (baseline): i-j-k triple loop with a scalar accumulator per $C_{ij}$.
 \item \texttt{reorder\_ikj} (optimisation 1, loop reordering): i-k-j order, $C$ zeroed first; the only change
-  is the loop order, which gives unit stride on $B$ and $C$ and lets gcc vectorise the inner loop.
+  is the loop order, which gives unit stride on $B$ and $C$ and keeps $a_{ik}$ in a register.
 \item \texttt{blocked\_ikj}($b$) (optimisation 2, cache blocking): the i, k and j loops are tiled into
   $b\times b$ tiles (edge tiles smaller) with i-k-j inside each tile. The block size is chosen by the study
   in \cref{sec:res-blocks}.
@@ -146,6 +149,10 @@ of \texttt{src/c/dense/matmul\_dense.h}:
   columns. Output columns are left unsorted; structural nonzeros are kept even if a sum cancels.
 \item Conversions \texttt{dense$\to$CSR} (two passes: count, fill) and \texttt{CSR$\to$dense} (scatter).
 \end{itemize}
+The generated assembly (\texttt{gcc -S}) and the vectoriser report (\texttt{-fopt-info-vec-all}) show that
+none of the three dense kernels is vectorised at \texttt{-O2}: all use scalar \texttt{mulsd}/\texttt{addsd}
+instructions (no FMA). The dense comparison therefore isolates the effect of the memory-access order; it
+does not include any SIMD effect.
 NumPy~\cite{harris2020} and SciPy~\cite{virtanen2020} are used only to generate inputs and as correctness
 references; no library code is inside any timed region.
 
@@ -252,10 +259,21 @@ $n=2048$, and the fastest median at $n=2048$ is used for every other dense measu
 
 % ------------------------------------------------------------------ Materials + AI statement
 \section*{Reproducibility Materials}
-\todo{}
+Repository: \url{https://github.com/danirodriguezz/bigdata-assignment02-optimised-sparse}
+\todo{commit of submitted version}. The archive \texttt{Assignment02\_RodriguezAlonso\_Materials.zip} contains
+the C sources (\texttt{src/c/}), correctness tests (\texttt{tests/}), input generator and experiment driver
+(\texttt{scripts/}), configurations (\texttt{configs/}), input checksums and sidecars (\texttt{data/inputs/};
+binary inputs are regenerated deterministically by \texttt{make inputs}), raw measurements
+(\texttt{results/raw/}, schema in \texttt{results/README.md}), the environment snapshot, and the analysis
+script that produces every table, figure and number of this report (\texttt{analysis/make\_all.py}).
+\texttt{make all} rebuilds, tests, regenerates the inputs, reruns the benchmark, the analysis and this PDF.
 
 \section*{Use of Generative AI}
-\todo{}
+Claude Code (Anthropic, model Claude Opus~5.5) was used to assist with planning the experiment, drafting and
+debugging the C and Python code (kernels, benchmark driver, tests, analysis scripts) and drafting the
+\LaTeX{} text of this report. The author reviewed and executed all code; every measurement comes from the
+author's runs on the machine of \cref{tab:env} and is recorded in \texttt{results/raw/}; every reference was
+checked against its DOI or official page.
 
 % ------------------------------------------------------------------ References
 \bibliographystyle{IEEEtran}
